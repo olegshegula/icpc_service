@@ -2,12 +2,12 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="7411" started-at="2014-09-04T15:17:09Z" finished-at="2014-09-04T15:17:16Z">
+  <suite name="Default suite" duration-ms="2604" started-at="2014-09-04T15:28:52Z" finished-at="2014-09-04T15:28:55Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="7411" started-at="2014-09-04T15:17:09Z" finished-at="2014-09-04T15:17:16Z">
+    <test name="Default test" duration-ms="2604" started-at="2014-09-04T15:28:52Z" finished-at="2014-09-04T15:28:55Z">
       <class name="test.JsonServiceTest">
-        <test-method status="PASS" signature="JsonTest()[pri:0, instance:test.JsonServiceTest@d70c109]" name="JsonTest" duration-ms="7400" started-at="2014-09-04T18:17:09Z" finished-at="2014-09-04T18:17:16Z">
+        <test-method status="PASS" signature="JsonTest()[pri:0, instance:test.JsonServiceTest@d70c109]" name="JsonTest" duration-ms="2592" started-at="2014-09-04T18:28:52Z" finished-at="2014-09-04T18:28:55Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- JsonTest -->
