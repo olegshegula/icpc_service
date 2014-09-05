@@ -5,7 +5,7 @@
     <classes>
       <class name="test.JsonServiceTest">
         <methods>
-          <include name="JsonTest"/>
+          <include name="registrationTest"/>
         </methods>
       </class> <!-- test.JsonServiceTest -->
     </classes>

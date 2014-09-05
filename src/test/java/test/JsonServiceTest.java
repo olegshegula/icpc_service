@@ -1,6 +1,8 @@
 package test;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -15,26 +17,76 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class JsonServiceTest {
 
 	@Test
-	public void JsonTest() {
+	public void ImportTest() {
 		ClientConfig config = new DefaultClientConfig();
 		Client client = Client.create(config);
 		WebResource webResource = client
 				.resource("http://acc.icpc.org.ua/user/baylor");
-		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();		
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
 		formData.add("email", "111@mailinator.com");
-		formData.add("password", "123456");		
-		ClientResponse response = webResource.queryParams(formData)
-				.header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+		formData.add("password", "123456");
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON_TYPE)	
 				.header("X-Requested-With", "XMLHttpRequest")
-				.header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0")
-				.header("Accept", "*/*")
-				.header("Accept-Encoding","gzip,deflate,sdch")
-				.header("Cookie", "PHPSESSID=eovcs964t7qv6ndrepneo1cdu6; language=en; _ga=GA1.3.1672955171.1407998251")						
-				.post(ClientResponse.class);		
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.post(ClientResponse.class,formData);
 		System.out.println(response.getStatus());
-		Assert.assertEquals(response.getStatus(), 200); 
-		
+		System.out.println(response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 200);
 
 	}
 
+	@Test
+	public void registrationTest() {
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri("http://acc.icpc.org.ua/auth/signup").build());
+		
+
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
+		formData.add("firstNameUk", "test");
+		formData.add("middleNameUk", "test");
+		formData.add("lastNameUk", "test");
+		//formData.add("email", "111@mailinator.com");
+		formData.add("email", "Den" + (int) (Math.random() * 10000 + 1)	+ "@mail.ru");
+		formData.add("password", "123456");
+		formData.add("passwordRepeat", "123456");
+		formData.add("schoolId", "526e889144579850658b456f");
+		formData.add("type", "student");
+		formData.add("rulesAgree", "1");
+		formData.add("recaptchaIgnore", "1");
+
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON_TYPE)	
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.post(ClientResponse.class,formData);
+		System.out.println(response.getStatus());
+		System.out.println(response.getEntity(String.class));		
+		Assert.assertEquals(response.getStatus(), 200);
+	}
+
+	@Test
+	public void registrationNegativeTest() {
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri("http://acc.icpc.org.ua/auth/signup").build());
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
+		formData.add("firstNameUk", "test");
+		formData.add("middleNameUk", "test");
+		formData.add("lastNameUk", "test");
+		formData.add("email", "111@mailinator.com");		
+		formData.add("password", "123456");
+		formData.add("passwordRepeat", "123456");
+		formData.add("schoolId", "526e889144579850658b456f");
+		formData.add("type", "student");
+		formData.add("rulesAgree", "1");
+		formData.add("recaptchaIgnore", "1");
+
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON_TYPE)	
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.post(ClientResponse.class,formData);
+		System.out.println(response.getStatus());
+		System.out.println(response.getEntity(String.class));		
+		Assert.assertEquals(response.getStatus(), 200);
+	}
 }
