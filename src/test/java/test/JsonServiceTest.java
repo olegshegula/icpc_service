@@ -105,7 +105,39 @@ public class JsonServiceTest {
 
 	
 	@Test
-	public void simple(){
-			
+	public void saveProfileCorrectTest(){
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri(
+				"http://acc.icpc.org.ua/user/additionalStudentSave").build());
+
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
+		formData.add("language", "en");
+		formData.add("dateOfBirth", "2014-09-08");
+		formData.add("phoneHome", "777777");			
+		formData.add("phoneMobile", "5555555");
+		formData.add("skype", "test");
+		formData.add("tShirtSize", "XXL");		
+		formData.add("vtShirtSize", "XXL");
+		formData.add("acmNumber", "234234234234");
+		formData.add("studyField", "IT");
+		formData.add("speciality", "developer");
+		formData.add("faculty", "math");
+		formData.add("group", "1");
+		formData.add("course", "1");
+		formData.add("schoolAdmissionYear", "1983");
+		formData.add("document", "213423423");
+
+		ClientResponse response = webResource
+				.accept(MediaType.APPLICATION_JSON_TYPE)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.header("Cookie", "_ga=GA1.3.920165144.1407417402; PHPSESSID=999fo7p0iek818tt6ftqkifku2; language=en")
+				.post(ClientResponse.class, formData);
+		System.out.println(response.getStatus());
+		//System.out.println(response.getEntity(String.class));	
+		JSONObject obj = new JSONObject(response.getEntity(String.class));
+		Assert.assertEquals(obj.get("errors"), false);
+		Assert.assertEquals(response.getStatus(), 200);
 	}
 }
