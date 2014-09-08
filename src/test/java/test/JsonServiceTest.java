@@ -140,4 +140,119 @@ public class JsonServiceTest {
 		Assert.assertEquals(obj.get("errors"), false);
 		Assert.assertEquals(response.getStatus(), 200);
 	}
+	
+	@Test
+	public void exportForRegistrationTest(){
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri(
+				"http://acc.icpc.org.ua/team/exportRegistration").build());
+				
+		ClientResponse response = webResource
+				.accept(MediaType.APPLICATION_JSON_TYPE)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.header("Cookie", "_ga=GA1.3.920165144.1407417402; PHPSESSID=495earvia5170r7o7nfdpj2uo1; language=en")
+				.get(ClientResponse.class);
+		System.out.println(response.getStatus());
+		Assert.assertTrue(response.getEntity(String.class).contains("HEPY-123"));	
+		
+		Assert.assertEquals(response.getStatus(), 200);
+		 
+	}
+	@Test
+	public void exportForCheckingSystemTest(){
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri(
+				"http://acc.icpc.org.ua/team/exportRegistration").build());
+		
+		ClientResponse response = webResource
+				.accept(MediaType.APPLICATION_JSON_TYPE)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.header("Cookie", "_ga=GA1.3.920165144.1407417402; PHPSESSID=495earvia5170r7o7nfdpj2uo1; language=en")
+				.get(ClientResponse.class);
+		System.out.println(response.getStatus());
+		Assert.assertTrue(response.getEntity(String.class).contains("HEPY-123"));	
+		
+		Assert.assertEquals(response.getStatus(), 200);
+		 
+	}
+	
+	@Test
+	public void getResultsJsonTest(){
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri(
+				"http://acc.icpc.org.ua/results/GetResultsListJson").build());
+
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
+		formData.add("year", "2014");
+		formData.add("geo", "arc");
+		formData.add("_search", "false");			
+		formData.add("nd", "1410185515806");
+		formData.add("rows", "1000");
+		formData.add("page", "1");		
+		formData.add("sidx", "place");
+		formData.add("sord", "asc");
+	
+		ClientResponse response = webResource
+				.accept(MediaType.APPLICATION_JSON_TYPE)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.header("Cookie", "_ga=GA1.3.920165144.1407417402; PHPSESSID=495earvia5170r7o7nfdpj2uo1; language=en")
+				.post(ClientResponse.class, formData);
+		System.out.println(response.getStatus());
+		System.out.println(response.getEntity(String.class));	
+		Assert.assertEquals(response.getStatus(), 200);
+	}
+	@Test
+	public void manageTeamsNegativeTest(){
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri(
+				"http://acc.icpc.org.ua/staff/team/manage").build());
+
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
+		formData.add("name", "YNC111");
+		formData.add("memberIds", "52947cef445798c85c8c1e77");
+	
+	
+		ClientResponse response = webResource
+				.accept(MediaType.APPLICATION_JSON_TYPE)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.header("Cookie", "_ga=GA1.3.920165144.1407417402; PHPSESSID=2j1s8gjo4kqm5f3fr428llnv63; language=en")
+				.post(ClientResponse.class, formData);
+		System.out.println(response.getStatus());		
+		JSONObject obj = new JSONObject(response.getEntity(String.class));
+		Assert.assertTrue((obj.get("errors")).toString().contains("The number of members should be greater or equal then 3."));
+		Assert.assertEquals(response.getStatus(), 200);
+	}
+	@Test
+	public void CreateTeamsTest(){
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client.resource(UriBuilder.fromUri(
+				"http://acc.icpc.org.ua/staff/team/manage").build());
+
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
+		formData.add("name", "YNCwer");
+		formData.add("memberIds", "52947cef445798c85c8c1e77");
+		formData.add("memberIds", "52947d24445798765d8c2483");
+		formData.add("memberIds", "52947d56445798255d8c2609");
+	
+		ClientResponse response = webResource
+				.accept(MediaType.APPLICATION_JSON_TYPE)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.header("Cookie", "_ga=GA1.3.920165144.1407417402; PHPSESSID=5d56um2onkh3q0ejl23pcfhck0; language=en")
+				.post(ClientResponse.class, formData);
+		System.out.println(response.getStatus());	
+		
+		JSONObject obj = new JSONObject(response.getEntity(String.class));
+		Assert.assertTrue((obj.get("errors")).equals(false));
+		Assert.assertEquals(response.getStatus(), 200);
+	}
 }
